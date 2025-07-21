@@ -1,0 +1,140 @@
+.dark-mode, .dark-mode body, .dark-mode #root {
+  background: linear-gradient(120deg, #18181b 0%, #27272a 100%) !important;
+  color: #e0e7ff !important;
+}
+
+.dark-mode .dashboard-container,
+.dark-mode .journal-container,
+.dark-mode .main-section > div,
+.dark-mode .pomodoro-container,
+.dark-mode .tasks-container {
+  background: #23232b !important;
+  color: #e0e7ff !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.30);
+}
+
+.dark-mode input,
+.dark-mode textarea {
+  background: #18181b !important;
+  color: #e0e7ff !important;
+  border: 1px solid #6366f1 !important;
+}
+
+.dark-mode button {
+  background: #6366f1 !important;
+  color: #fff !important;
+}
+
+.dark-mode .navbar {
+  background: #23232b !important;
+  color: #e0e7ff !important;
+}
+
+.dark-mode a,
+.dark-mode a:visited {
+  color: #a5b4fc !important;
+}
+
+.dark-mode .main-section > div {
+  background: #23232b !important;
+  color: #e0e7ff !important;
+}
+
+.dark-mode .main-section a {
+  background: #6366f1 !important;
+  color: #fff !important;
+}
+
+.dark-mode .main-section h2 {
+  color: #a5b4fc !important;
+}
+
+.dark-mode .main-section p {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .journal-entry {
+  background: #18181b !important;
+  color: #e0e7ff !important;
+}
+
+.dark-mode .pomodoro-container {
+  background: #23232b !important;
+  color: #e0e7ff !important;
+}
+
+.dark-mode .tasks-container {
+  background: #23232b !important;
+  color: #e0e7ff !important;
+}
+/* Dark mode styles */
+.dark-mode {
+  background: linear-gradient(120deg, #18181b 0%, #27272a 100%) !important;
+  color: #e0e7ff !important;
+}
+
+.dark-mode .dashboard-container,
+.dark-mode .journal-container {
+  background: #23232b !important;
+  color: #e0e7ff !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.30);
+}
+
+.dark-mode input,
+.dark-mode textarea {
+  background: #18181b !important;
+  color: #e0e7ff !important;
+  border: 1px solid #6366f1 !important;
+}
+
+.dark-mode button {
+  background: #6366f1 !important;
+  color: #fff !important;
+}
+
+.dark-mode .navbar {
+  background: #23232b !important;
+  color: #e0e7ff !important;
+}
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
