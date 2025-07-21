@@ -10,28 +10,50 @@ const LoginSignup = () => {
   const navigate = useNavigate();
 
   const handleAuth = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const endpoint = isSignup ? '/api/user/signup' : '/api/user/login';
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        if (!isSignup) {
-          localStorage.setItem('token', data.token);
-          navigate('/dashboard');
-        } else {
-          setIsSignup(false);
-        }
+  e.preventDefault();
+  setLoading(true);
+  
+  // Use the correct URL construction to avoid double /api/
+  const baseURL = import.meta.env.VITE_API_URL;
+  const endpoint = isSignup ? 'signup' : 'login';
+  const fullURL = `${baseURL}/api/user/${endpoint}`;
+  
+  console.log('=== DEBUG INFO ===');
+  console.log('Base URL:', baseURL);
+  console.log('Endpoint:', endpoint);  
+  console.log('Full URL:', fullURL);
+  console.log('==================');
+  
+  try {
+    const res = await fetch(fullURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    
+    const data = await res.json();
+    console.log('Response received:', { status: res.status, data });
+    
+    if (res.ok) {
+      if (!isSignup) {
+        localStorage.setItem('token', data.token);
+        alert('Login successful!');
+        navigate('/dashboard');
+      } else {
+        alert('Account created successfully! Please log in.');
+        setIsSignup(false);
       }
-    } finally {
-      setLoading(false);
+    } else {
+      console.error('Authentication failed:', data);
+      alert(data.error || data.message || 'Authentication failed');
     }
-  };
+  } catch (error) {
+    console.error('Network error:', error);
+    alert(`Network error: ${error.message}`);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleGoogleLogin = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
