@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken');
 // Function to create a JWT token
 // Helper to create a JWT token
 const createToken = (_id) => {
-  if (!process.env.SECRET_KEY) {
-    throw new Error('SECRET_KEY is not defined in environment variables');
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET is not defined in environment variables');
   }
-  return jwt.sign({ _id }, process.env.SECRET_KEY, { expiresIn: '3d' });
+  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: '3d' });
 };
 
 
