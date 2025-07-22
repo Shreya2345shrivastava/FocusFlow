@@ -1,0 +1,19 @@
+{
+  "name": "focusflow",
+  "version": "1.0.0",
+  "description": "A MERN stack productivity app",
+  "scripts": {
+    "dev": "npm run dev --prefix client",
+    "build": "npm run build --prefix client",
+    "start": "npm run dev --prefix client",
+    "server": "npm run dev --prefix server",
+    "install-client": "npm install --prefix client",
+    "install-server": "npm install --prefix server",
+    "install-all": "npm run install-client && npm run install-server",
+    "vercel-build": "npm run install-client && npm run build --prefix client"
+  },
+  "workspaces": ["client", "server"],
+  "keywords": ["react", "node", "express", "mongodb"],
+  "author": "Your Name",
+  "license": "MIT"
+}
