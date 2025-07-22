@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 const Pomodoro = () => {
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes
   const [isRunning, setIsRunning] = useState(false);
 
-  const savePomodoroSession = async () => {
+  const savePomodoroSession = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pomodoro/save`, {
@@ -23,7 +23,7 @@ const Pomodoro = () => {
     } catch (err) {
       console.error("Failed to save session:", err);
     }
-  };
+  }, [timeLeft]);
 
   useEffect(() => {
     let timer;
@@ -44,7 +44,7 @@ const Pomodoro = () => {
     }
 
     return () => clearInterval(timer);
-  }, [isRunning, timeLeft]);
+  }, [isRunning, timeLeft, savePomodoroSession]);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
