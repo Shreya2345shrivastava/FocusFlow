@@ -25,3 +25,4 @@ build/
 *.local
 *.sublime-workspace
 *.sublime-project
+.vercel
