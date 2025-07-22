@@ -8,6 +8,7 @@
     "build": "vite build",
     "build:local": "vite build --mode local",
     "build:production": "vite build --mode production",
+    "vercel-build": "npm run build:production",
     "lint": "eslint .",
     "preview": "vite preview"
   },
