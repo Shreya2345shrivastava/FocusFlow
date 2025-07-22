@@ -17,7 +17,16 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: [
+    'http://localhost:5173', // Local development
+    'https://focus-flow-kohl.vercel.app', // Your Vercel deployment
+    'http://localhost:3000' // Alternative local port
+  ],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Test route
