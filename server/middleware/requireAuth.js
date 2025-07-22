@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    const secret = process.env.SECRET_KEY || process.env.JWT_SECRET;
+    const secret = process.env.JWT_SECRET;
     if (!secret) {
       throw new Error("JWT secret is not defined in environment variables");
     }

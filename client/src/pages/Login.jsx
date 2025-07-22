@@ -1,6 +1,7 @@
 import '../App.css'; // Adjust the path if needed
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const LoginSignup = () => {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ const LoginSignup = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleAuth = async (e) => {
   e.preventDefault();
@@ -36,7 +38,7 @@ const LoginSignup = () => {
     
     if (res.ok) {
       if (!isSignup) {
-        localStorage.setItem('token', data.token);
+        login(data.token);
         alert('Login successful!');
         navigate('/dashboard');
       } else {

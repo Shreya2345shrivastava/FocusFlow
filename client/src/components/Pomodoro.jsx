@@ -7,7 +7,7 @@ const Pomodoro = () => {
   const savePomodoroSession = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/pomodoro/save`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pomodoro/save`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

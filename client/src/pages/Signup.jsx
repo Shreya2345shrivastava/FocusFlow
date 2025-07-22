@@ -1,6 +1,7 @@
 import '../App.css'; // Adjust the path depending on the file location
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ const Signup = () => {
   const [location, setLocation] = useState('');
   const [summary, setSummary] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -27,7 +29,7 @@ const Signup = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        localStorage.setItem('token', data.token);
+        login(data.token);
         navigate('/dashboard');
       } else {
         setError(data.message || data.error || 'Signup failed');
