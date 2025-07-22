@@ -1,22 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState('SSR');
-  const [username,] = useState('Ssr123');
-  const [email,] = useState('ssr@example.com');
+  const { token } = useAuth();
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
   const [location, setLocation] = useState('');
-
-
-
-
-  
   const [birthday, setBirthday] = useState('');
   const [summary, setSummary] = useState('');
   const [website, setWebsite] = useState('');
+
+  useEffect(() => {
+    // Fetch user profile data when component mounts
+    const fetchUserProfile = async () => {
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (res.ok) {
+          const userData = await res.json();
+          setName(userData.fullName || userData.name || '');
+          setUsername(userData.username || '');
+          setEmail(userData.email || '');
+          setGender(userData.gender || '');
+          setLocation(userData.location || '');
+          setBirthday(userData.birthday ? userData.birthday.split('T')[0] : '');
+          setSummary(userData.summary || '');
+          setWebsite(userData.website || '');
+        } else {
+          console.error('Failed to fetch profile data');
+          // If token is invalid, redirect to login
+          if (res.status === 401) {
+            navigate('/login');
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [token, navigate]);
 
   const handleSaveChanges = async () => {
     const updatedProfile = {
