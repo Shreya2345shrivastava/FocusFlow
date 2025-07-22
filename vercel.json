@@ -1,6 +1,8 @@
 {
-  "buildCommand": "cd client && npm install && npm run build:production",
+  "buildCommand": "cd client && npm ci && npm run build:production",
   "outputDirectory": "client/dist",
+  "installCommand": "cd client && npm ci",
+  "framework": null,
   "rewrites": [
     {
       "source": "/api/(.*)",
