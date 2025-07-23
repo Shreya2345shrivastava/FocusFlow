@@ -1,19 +1,12 @@
 {
-  "functions": {
-    "src/api/*.js": {
-      "runtime": "@vercel/node"
-    }
-  },
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "https://focusflow-backend-jitt.onrender.com/api/$1"
-    }
-  ],
-  "routes": [
+    },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

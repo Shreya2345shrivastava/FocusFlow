@@ -38,7 +38,7 @@ const LoginSignup = () => {
     
     if (res.ok) {
       if (!isSignup) {
-        login(data.token);
+        login(data.token, { email: data.email, id: data.id });
         alert('Login successful!');
         navigate('/dashboard');
       } else {
