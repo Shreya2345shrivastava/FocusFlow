@@ -76,7 +76,7 @@ app.use(passport.session());
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("📘 FocusFlow server is running! Updated: " + new Date().toISOString() + " - Routes should work now!");
+  res.send("📘 FocusFlow server is running! Version: 2.0 - " + new Date().toISOString() + " - Routes should work now!");
 });
 
 // Simple test route to verify server is working
