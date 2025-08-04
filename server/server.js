@@ -1,3 +1,7 @@
+console.log('🚀 Starting FocusFlow server...');
+console.log('📁 Current working directory:', process.cwd());
+console.log('📄 Node.js version:', process.version);
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -72,11 +76,22 @@ app.use(passport.session());
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("📘 FocusFlow server is running! Updated: " + new Date().toISOString());
+  res.send("📘 FocusFlow server is running! Updated: " + new Date().toISOString() + " - Routes should work now!");
+});
+
+// Simple test route to verify server is working
+app.get("/test", (req, res) => {
+  res.json({ message: "Test route working!", timestamp: new Date().toISOString() });
 });
 
 // Route mounting
 console.log('🔧 Mounting routes...');
+console.log('📋 AuthRoutes stack length:', authRoutes.stack ? authRoutes.stack.length : 'No stack');
+if (authRoutes.stack) {
+  authRoutes.stack.forEach((layer, i) => {
+    console.log(`  Route ${i}: ${layer.route ? layer.route.path : 'middleware'} - ${layer.route ? Object.keys(layer.route.methods) : 'N/A'}`);
+  });
+}
 app.use("/api/user", authRoutes);
 console.log('✅ Mounted /api/user routes');
 app.use("/auth", authRoutes); // For Google OAuth routes
