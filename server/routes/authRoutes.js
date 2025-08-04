@@ -19,36 +19,42 @@ const validateAuth = (req, res, next) => {
 router.post("/signup", validateAuth, signup);
 router.post("/login", validateAuth, login);
 
-// Google OAuth routes
-router.get('/google', passport.authenticate('google', {
-  scope: ['profile', 'email']
-}));
+// Google OAuth routes - only if credentials are available
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  console.log('✅ Setting up Google OAuth routes');
+  
+  router.get('/google', passport.authenticate('google', {
+    scope: ['profile', 'email']
+  }));
 
-// Google OAuth callback
-router.get('/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  async (req, res) => {
-    try {
-      console.log('🔐 OAuth Callback - User ID:', req.user._id);
-      
-      // Generate JWT token for the user
-      const token = jwt.sign(
-        { userId: req.user._id },
-        process.env.JWT_SECRET,
-        { expiresIn: '24h' }
-      );
+  // Google OAuth callback
+  router.get('/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    async (req, res) => {
+      try {
+        console.log('🔐 OAuth Callback - User ID:', req.user._id);
+        
+        // Generate JWT token for the user
+        const token = jwt.sign(
+          { userId: req.user._id },
+          process.env.JWT_SECRET,
+          { expiresIn: '24h' }
+        );
 
-      console.log('✅ JWT Token generated successfully');
-      
-      // Redirect to frontend with token
-      const frontendURL = process.env.CLIENT_URL || 'http://localhost:5173';
-      res.redirect(`${frontendURL}/auth/callback?token=${token}`);
-    } catch (error) {
-      console.error('OAuth callback error:', error);
-      const frontendURL = process.env.CLIENT_URL || 'http://localhost:5173';
-      res.redirect(`${frontendURL}/login?error=auth_failed`);
+        console.log('✅ JWT Token generated successfully');
+        
+        // Redirect to frontend with token
+        const frontendURL = process.env.CLIENT_URL || 'http://localhost:5173';
+        res.redirect(`${frontendURL}/auth/callback?token=${token}`);
+      } catch (error) {
+        console.error('OAuth callback error:', error);
+        const frontendURL = process.env.CLIENT_URL || 'http://localhost:5173';
+        res.redirect(`${frontendURL}/login?error=auth_failed`);
+      }
     }
-  }
-);
+  );
+} else {
+  console.log('⚠️  Google OAuth routes disabled - credentials not found');
+}
 
 module.exports = router;

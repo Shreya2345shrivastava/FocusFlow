@@ -5,11 +5,15 @@ const User = require('../models/User');
 // Ensure environment variables are loaded
 require('dotenv').config();
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "/auth/google/callback"
-}, async (accessToken, refreshToken, profile, done) => {
+// Only configure Google OAuth if credentials are available
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  console.log('✅ Configuring Google OAuth strategy');
+  
+  passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "/auth/google/callback"
+  }, async (accessToken, refreshToken, profile, done) => {
   try {
     console.log('Google OAuth Profile:', profile.id, profile.emails[0].value);
     
@@ -49,6 +53,10 @@ passport.use(new GoogleStrategy({
     return done(error, null);
   }
 }));
+
+} else {
+  console.log('⚠️  Google OAuth credentials not found - OAuth login disabled');
+}
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
