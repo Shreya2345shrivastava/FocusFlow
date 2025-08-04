@@ -6,6 +6,7 @@ const router = express.Router();
 // Make sure the path to authController is correct!
 const { signup, login } = require("../controllers/authController.js");
 
+console.log('🔧 AuthRoutes: Controllers imported:', typeof signup, typeof login);
 
 // Input validation middleware
 const validateAuth = (req, res, next) => {
@@ -18,6 +19,8 @@ const validateAuth = (req, res, next) => {
 
 router.post("/signup", validateAuth, signup);
 router.post("/login", validateAuth, login);
+
+console.log('✅ AuthRoutes: /signup and /login routes defined');
 
 // Google OAuth routes - only if credentials are available
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {

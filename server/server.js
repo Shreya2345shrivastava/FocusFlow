@@ -76,8 +76,11 @@ app.get("/", (req, res) => {
 });
 
 // Route mounting
+console.log('🔧 Mounting routes...');
 app.use("/api/user", authRoutes);
+console.log('✅ Mounted /api/user routes');
 app.use("/auth", authRoutes); // For Google OAuth routes
+console.log('✅ Mounted /auth routes');
 app.use("/api/journals", journalRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/pomodoro", pomodoroRoutes);
