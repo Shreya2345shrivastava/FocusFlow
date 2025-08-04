@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: focusflow-backend
+    env: node
+    buildCommand: npm run install-server
+    startCommand: npm start --prefix server
+    envVars:
+      - key: NODE_ENV
+        value: production

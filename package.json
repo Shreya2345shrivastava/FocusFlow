@@ -4,7 +4,7 @@
   "description": "A MERN stack productivity app",
   "scripts": {
     "dev": "npm run dev --prefix client",
-    "build": "npm run install-server",
+    "build": "npm run install-client && npm run build --prefix client",
     "start": "npm start --prefix server",
     "client": "npm run dev --prefix client",
     "server": "npm run dev --prefix server",
