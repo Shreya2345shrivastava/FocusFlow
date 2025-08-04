@@ -2,6 +2,8 @@
 
 FocusFlow is a full-stack productivity application built with the MERN stack (MongoDB, Express, React, Node.js). It helps users manage tasks, track Pomodoro sessions, and maintain a personal journal—all in one place.
 
+🚀 **Live Demo**: https://focus-flow-kohl.vercel.app
+
 ## Features
 
 - User authentication (JWT-based)
