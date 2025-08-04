@@ -72,7 +72,7 @@ app.use(passport.session());
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("📘 FocusFlow server is running!");
+  res.send("📘 FocusFlow server is running! Updated: " + new Date().toISOString());
 });
 
 // Route mounting
