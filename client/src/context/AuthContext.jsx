@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
       
       if (storedToken) {
         try {
-          // Verify token with backend
+          // Verify token with backend - Updated URL
           const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
             headers: {
               'Authorization': `Bearer ${storedToken}`
