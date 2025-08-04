@@ -1,16 +1,12 @@
 import '../App.css'; // Adjust the path depending on the file location
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
-  const [gender, setGender] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [location, setLocation] = useState('');
-  const [summary, setSummary] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -25,7 +21,7 @@ const Signup = () => {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, fullName, gender, birthday, location, summary }),
+        body: JSON.stringify({ email, password, fullName }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -54,40 +50,6 @@ const Signup = () => {
           onChange={(e) => setFullName(e.target.value)}
           required
           style={{ padding: '0.75rem', borderRadius: 8, border: '1px solid #cbd5e1', fontSize: '1rem' }}
-        />
-        <select
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          required
-          style={{ padding: '0.75rem', borderRadius: 8, border: '1px solid #cbd5e1', fontSize: '1rem' }}
-        >
-          <option value="" disabled hidden>Choose Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-        <input
-          type="date"
-          placeholder="Birthday"
-          value={birthday}
-          onChange={(e) => setBirthday(e.target.value)}
-          required
-          style={{ padding: '0.75rem', borderRadius: 8, border: '1px solid #cbd5e1', fontSize: '1rem' }}
-        />
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          required
-          style={{ padding: '0.75rem', borderRadius: 8, border: '1px solid #cbd5e1', fontSize: '1rem' }}
-        />
-        <textarea
-          placeholder="Summary"
-          value={summary}
-          onChange={(e) => setSummary(e.target.value)}
-          required
-          style={{ padding: '0.75rem', borderRadius: 8, border: '1px solid #cbd5e1', fontSize: '1rem', resize: 'none', height: '100px' }}
         />
         <input
           type="email"

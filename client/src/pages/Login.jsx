@@ -1,11 +1,12 @@
 import '../App.css'; // Adjust the path if needed
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const LoginSignup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
   const [isSignup, setIsSignup] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -30,7 +31,11 @@ const LoginSignup = () => {
     const res = await fetch(fullURL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify(
+        isSignup 
+          ? { email, password, fullName }
+          : { email, password }
+      ),
     });
     
     const data = await res.json();
@@ -58,6 +63,9 @@ const LoginSignup = () => {
 };
 
   const handleGoogleLogin = () => {
+    console.log('🚀 Starting Google OAuth...');
+    console.log('API URL:', import.meta.env.VITE_API_URL);
+    console.log('Redirect URL:', `${import.meta.env.VITE_API_URL}/auth/google`);
     window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
@@ -78,6 +86,16 @@ const LoginSignup = () => {
             {isSignup ? 'Please enter your details to sign up.' : 'Please enter your details to log in.'}
           </p>
           <form onSubmit={handleAuth} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {isSignup && (
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+                style={{ padding: '0.75rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '1rem', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}
+              />
+            )}
             <input
               type="email"
               placeholder="Email address"
@@ -131,7 +149,10 @@ const LoginSignup = () => {
           </form>
           <p style={{ fontSize: '0.875rem', color: '#6b7280', marginTop: '1rem', textAlign: 'center' }}>
             {isSignup ? 'Already have an account?' : 'Don’t have an account?'}{' '}
-            <button type="button" onClick={() => setIsSignup(!isSignup)} style={{
+            <button type="button" onClick={() => {
+              setIsSignup(!isSignup);
+              setFullName(''); // Clear fullName when switching modes
+            }} style={{
               background: 'none',
               border: 'none',
               color: '#4f46e5',

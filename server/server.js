@@ -2,6 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const session = require('express-session');
+
+// Load environment variables FIRST
+dotenv.config();
+
+// Now import passport (which needs env vars)
+const passport = require('./config/passport');
 
 const authRoutes = require("./routes/authRoutes");
 const journalRoutes = require("./routes/journalRoutes");
@@ -10,8 +17,6 @@ const pomodoroRoutes = require("./routes/pomodoroRoutes");
 const profileRoutes = require('./routes/profileRoutes');
 const passwordRoutes = require('./routes/passwordRoutes');
 const requireAuth = require("./middleware/requireAuth");
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -29,6 +34,18 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Session configuration for Passport
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your-session-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // Set to true in production with HTTPS
+}));
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Test route
 app.get("/", (req, res) => {
   res.send("📘 FocusFlow server is running!");
@@ -36,6 +53,7 @@ app.get("/", (req, res) => {
 
 // Route mounting
 app.use("/api/user", authRoutes);
+app.use("/auth", authRoutes); // For Google OAuth routes
 app.use("/api/journals", journalRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/pomodoro", pomodoroRoutes);

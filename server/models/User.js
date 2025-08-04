@@ -16,7 +16,9 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: function() {
+      return !this.googleId; // Password not required if signing up with Google
+    },
     minlength: 6
   },
   fullName: {
@@ -24,23 +26,13 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  gender: {
+  googleId: {
     type: String,
-    required: true
+    unique: true,
+    sparse: true // Allows multiple null values
   },
-  birthday: {
-    type: Date,
-    required: true
-  },
-  location: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  summary: {
-    type: String,
-    required: true,
-    trim: true
+  avatar: {
+    type: String
   }
 }, { timestamps: true });
 
@@ -58,8 +50,8 @@ userSchema.pre('save', async function(next) {
 });
 
 // Add static signup and login methods
-userSchema.statics.signup = async function(email, password, fullName, gender, birthday, location, summary) {
-  if (!email || !password || !fullName || !gender || !birthday || !location || !summary) {
+userSchema.statics.signup = async function(email, password, fullName) {
+  if (!email || !password || !fullName) {
     throw Error('All fields are required');
   }
   const exists = await this.findOne({ email });
@@ -67,7 +59,7 @@ userSchema.statics.signup = async function(email, password, fullName, gender, bi
     throw Error('Email already in use');
   }
   
-  const user = await this.create({ email, password, username: email.split('@')[0], fullName, gender, birthday, location, summary });
+  const user = await this.create({ email, password, username: email.split('@')[0], fullName });
   return user;
 };
 

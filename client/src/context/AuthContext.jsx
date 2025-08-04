@@ -1,8 +1,13 @@
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
+// Create context
 const AuthContext = createContext();
 
+// Export the context for use in hooks
+export { AuthContext };
+
+// Export the provider component
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(() => localStorage.getItem("token"));
@@ -15,7 +20,7 @@ export function AuthProvider({ children }) {
       if (storedToken) {
         try {
           // Verify token with backend
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/profile`, {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
             headers: {
               'Authorization': `Bearer ${storedToken}`
             }
@@ -65,8 +70,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  return useContext(AuthContext);
 }
