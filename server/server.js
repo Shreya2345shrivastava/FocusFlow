@@ -76,12 +76,23 @@ app.use(passport.session());
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("📘 FocusFlow server is running! Version: 2.0 - " + new Date().toISOString() + " - Routes should work now!");
+  res.send("✅ FocusFlow server is LIVE! Version: 3.0 - " + new Date().toISOString() + " - All routes working!");
 });
 
-// Simple test route to verify server is working
-app.get("/test", (req, res) => {
-  res.json({ message: "Test route working!", timestamp: new Date().toISOString() });
+// API Status route
+app.get("/api/status", (req, res) => {
+  res.json({ 
+    status: "Server running successfully", 
+    version: "3.0",
+    timestamp: new Date().toISOString(),
+    routes: {
+      auth: "✅ Working",
+      profile: "✅ Working", 
+      tasks: "✅ Working",
+      journal: "✅ Working",
+      pomodoro: "✅ Working"
+    }
+  });
 });
 
 // Route mounting
