@@ -8,6 +8,9 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   plugins: [react()],
   base: '/',
+  server: {
+    port: 5174
+  },
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

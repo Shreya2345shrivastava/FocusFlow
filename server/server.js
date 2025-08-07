@@ -4,7 +4,10 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const passport = require('passport');
 
-// Import passport configuration
+// Load environment variables FIRST
+dotenv.config();
+
+// Import passport configuration AFTER dotenv
 require('./config/passport');
 
 const authRoutes = require("./routes/authRoutes");
@@ -14,8 +17,6 @@ const pomodoroRoutes = require("./routes/pomodoroRoutes");
 const profileRoutes = require('./routes/profileRoutes');
 const passwordRoutes = require('./routes/passwordRoutes');
 const requireAuth = require("./middleware/requireAuth");
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8000;
