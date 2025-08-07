@@ -19,7 +19,7 @@ const getProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  const { name, website, github, linkedin } = req.body;
+  const { name, gender, location, birthday, summary, website, github, linkedin } = req.body;
 
   try {
     // Assuming user ID is available in req.userId (from authentication middleware)
@@ -27,7 +27,7 @@ const updateProfile = async (req, res) => {
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { name, website, github, linkedin },
+      { name, gender, location, birthday, summary, website, github, linkedin },
       { new: true, runValidators: true }
     );
 

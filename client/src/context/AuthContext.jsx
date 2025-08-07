@@ -16,22 +16,30 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const checkAuthStatus = async () => {
       const storedToken = localStorage.getItem("token");
+      console.log('AuthContext - Checking auth status, stored token:', !!storedToken);
       
       if (storedToken) {
         try {
-          // Verify token with backend - Updated URL
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
+          // Verify token with backend
+          const apiUrl = `${import.meta.env.VITE_API_URL}/api/profile`;
+          console.log('AuthContext - Making request to:', apiUrl);
+          
+          const response = await fetch(apiUrl, {
             headers: {
               'Authorization': `Bearer ${storedToken}`
             }
           });
           
+          console.log('AuthContext - Response status:', response.status);
+          
           if (response.ok) {
             const userData = await response.json();
+            console.log('AuthContext - User data received:', userData);
             setUser(userData);
             setToken(storedToken);
           } else {
             // Token is invalid, remove it
+            console.log('AuthContext - Token invalid, removing');
             localStorage.removeItem("token");
             setUser(null);
             setToken(null);
@@ -43,6 +51,7 @@ export function AuthProvider({ children }) {
           setToken(null);
         }
       } else {
+        console.log('AuthContext - No stored token');
         setUser(null);
         setToken(null);
       }

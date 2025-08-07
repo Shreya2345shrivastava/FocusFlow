@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth.js';
 import Navbar from '../components/Navbar';
 
 const ProfilePage = () => {
@@ -9,6 +9,10 @@ const ProfilePage = () => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
+  const [location, setLocation] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [summary, setSummary] = useState('');
   const [website, setWebsite] = useState('');
 
   useEffect(() => {
@@ -33,6 +37,10 @@ const ProfilePage = () => {
           setName(userData.fullName || userData.name || '');
           setUsername(userData.username || '');
           setEmail(userData.email || '');
+          setGender(userData.gender || '');
+          setLocation(userData.location || '');
+          setBirthday(userData.birthday ? userData.birthday.split('T')[0] : '');
+          setSummary(userData.summary || '');
           setWebsite(userData.website || '');
         } else {
           console.error('Failed to fetch profile data');
@@ -52,6 +60,10 @@ const ProfilePage = () => {
   const handleSaveChanges = async () => {
     const updatedProfile = {
       name,
+      gender,
+      location,
+      birthday,
+      summary,
       website,
     };
 
@@ -166,6 +178,61 @@ const ProfilePage = () => {
                 <tr>
                   <td><label>Name</label></td>
                   <td><input type="text" value={name} onChange={e => setName(e.target.value)} className="profile-input" placeholder="Your full name" style={{
+  width: '100%',
+  padding: '0.5rem',
+  borderRadius: 8,
+  border: '1px solid #e5e7eb',
+  background: '#9495e3ff',
+  fontSize: '1rem',
+  color: '#e0e7ff',
+}} /></td>
+                </tr>
+                <tr>
+                  <td><label>Gender</label></td>
+                  <td>
+                    <select value={gender} onChange={e => setGender(e.target.value)} className="profile-input" placeholder="Your Gender" style={{
+  width: '100%',
+  padding: '0.5rem',
+  borderRadius: 8,
+  border: '1px solid #e5e7eb',
+  background: '#9495e3ff',
+  fontSize: '1rem',
+  color: '#e0e7ff',
+}}>
+                      <option value="" disabled hidden>Choose gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label>Location</label></td>
+                  <td><input type="text" value={location} onChange={e => setLocation(e.target.value)} className="profile-input" placeholder="Your city, state, country" style={{
+  width: '100%',
+  padding: '0.5rem',
+  borderRadius: 8,
+  border: '1px solid #e5e7eb',
+  background: '#9495e3ff',
+  fontSize: '1rem',
+  color: '#e0e7ff',
+}} /></td>
+                </tr>
+                <tr>
+                  <td><label>Birthday</label></td>
+                  <td><input type="text" value={birthday} onChange={e => setBirthday(e.target.value)} className="profile-input" placeholder="YYYY-MM-DD" style={{
+  width: '100%',
+  padding: '0.5rem',
+  borderRadius: 8,
+  border: '1px solid #e5e7eb',
+  background: '#9495e3ff',
+  fontSize: '1rem',
+  color: '#e0e7ff',
+}} /></td>
+                </tr>
+                <tr>
+                  <td><label>Summary</label></td>
+                  <td><input type="text" value={summary} onChange={e => setSummary(e.target.value)} className="profile-input" placeholder="Your professional summary" style={{
   width: '100%',
   padding: '0.5rem',
   borderRadius: 8,

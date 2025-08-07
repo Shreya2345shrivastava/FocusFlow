@@ -1,18 +1,7 @@
-console.log('🚀 Starting FocusFlow server...');
-console.log('📁 Current working directory:', process.cwd());
-console.log('📄 Node.js version:', process.version);
-
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const session = require('express-session');
-
-// Load environment variables FIRST
-dotenv.config();
-
-// Now import passport (which needs env vars)
-const passport = require('./config/passport');
 
 const authRoutes = require("./routes/authRoutes");
 const journalRoutes = require("./routes/journalRoutes");
@@ -22,91 +11,50 @@ const profileRoutes = require('./routes/profileRoutes');
 const passwordRoutes = require('./routes/passwordRoutes');
 const requireAuth = require("./middleware/requireAuth");
 
+dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 
 // Middleware
 const corsOptions = {
   origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:5173', // Local development
+      'http://localhost:5174', // Local development (alternate port)
+      'https://focus-flow-kohl.vercel.app', // Your Vercel deployment
+      'http://localhost:3000' // Alternative local port
+    ];
+    
+    console.log('CORS - Request from origin:', origin);
+    
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     
-    const allowedOrigins = [
-      'http://localhost:5173',
-      'http://localhost:5174', 
-      'https://focus-flow-kohl.vercel.app',
-      'http://localhost:3000'
-    ];
-    
-    console.log('🌐 CORS Origin:', origin);
-    
-    if (allowedOrigins.includes(origin)) {
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log('CORS - Origin allowed:', origin);
       callback(null, true);
     } else {
-      console.log('❌ CORS blocked origin:', origin);
+      console.log('CORS - Origin blocked:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  optionsSuccessStatus: 200 // For legacy browser support
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// CORS debugging middleware
-app.use((req, res, next) => {
-  console.log('🔍 Request from origin:', req.get('Origin'));
-  console.log('🔍 Request method:', req.method);
-  next();
-});
-
-// Session configuration for Passport
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'your-session-secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false } // Set to true in production with HTTPS
-}));
-
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
-
 // Test route
 app.get("/", (req, res) => {
-  res.send("🚀 FocusFlow server is LIVE! Version: 4.0 - " + new Date().toISOString() + " - All routes working!");
-});
-
-// API Status route
-app.get("/api/status", (req, res) => {
-  res.json({ 
-    status: "Server running successfully", 
-    version: "3.0",
-    timestamp: new Date().toISOString(),
-    routes: {
-      auth: "✅ Working",
-      profile: "✅ Working", 
-      tasks: "✅ Working",
-      journal: "✅ Working",
-      pomodoro: "✅ Working"
-    }
-  });
+  res.send("📘 FocusFlow server is running!");
 });
 
 // Route mounting
-console.log('🔧 Mounting routes...');
-console.log('📋 AuthRoutes stack length:', authRoutes.stack ? authRoutes.stack.length : 'No stack');
-if (authRoutes.stack) {
-  authRoutes.stack.forEach((layer, i) => {
-    console.log(`  Route ${i}: ${layer.route ? layer.route.path : 'middleware'} - ${layer.route ? Object.keys(layer.route.methods) : 'N/A'}`);
-  });
-}
 app.use("/api/user", authRoutes);
-console.log('✅ Mounted /api/user routes');
-app.use("/auth", authRoutes); // For Google OAuth routes
-console.log('✅ Mounted /auth routes');
 app.use("/api/journals", journalRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/pomodoro", pomodoroRoutes);

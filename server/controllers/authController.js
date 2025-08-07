@@ -7,21 +7,21 @@ const createToken = (_id) => {
   if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET is not defined in environment variables');
   }
-  return jwt.sign({ userId: _id }, process.env.JWT_SECRET, { expiresIn: '3d' });
+  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: '3d' });
 };
 
 
 // POST /signup
 const signup = async (req, res) => {
-  const { email, password, fullName } = req.body;
+  const { email, password, fullName, gender, birthday, location, summary } = req.body;
 
   // Basic input validation
-  if (!email || !password || !fullName) {
+  if (!email || !password || !fullName || !gender || !birthday || !location || !summary) {
     return res.status(400).json({ error: 'All fields are required.' });
   }
 
   try {
-    const user = await User.signup(email, password, fullName);
+    const user = await User.signup(email, password, fullName, gender, birthday, location, summary);
     const token = createToken(user._id);
     res.status(200).json({ email, token, id: user._id });
   } catch (error) {

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import { useAuth } from './hooks/useAuth';
+import { AuthProvider } from './context/AuthContext.jsx';
+import { useAuth } from './hooks/useAuth.js';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
@@ -10,16 +10,20 @@ import PomodoroPage from './pages/Pomodoro';
 import TasksPage from './pages/Tasks';
 import ProfilePage from './pages/Profile';
 import ForgotPassword from './pages/ForgotPassword';
-import AuthCallback from './pages/AuthCallback';
 
 function PrivateRoute({ children }) {
-  const { user, loading } = useAuth();
+  const { user, token, loading } = useAuth();
   
   if (loading) {
     return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
   }
   
-  return user ? children : <Navigate to="/login" replace />;
+  // Check for both user and token for authentication
+  const isAuthenticated = user && token;
+  
+  console.log('PrivateRoute - Auth status:', { user: !!user, token: !!token, isAuthenticated });
+  
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
 function AppContent() {
@@ -29,7 +33,6 @@ function AppContent() {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/dashboard" element={
           <PrivateRoute>
