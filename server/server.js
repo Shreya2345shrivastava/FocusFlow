@@ -2,6 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const passport = require('passport');
+
+// Import passport configuration
+require('./config/passport');
 
 const authRoutes = require("./routes/authRoutes");
 const journalRoutes = require("./routes/journalRoutes");
@@ -48,13 +52,17 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Initialize Passport
+app.use(passport.initialize());
+
 // Test route
 app.get("/", (req, res) => {
   res.send("📘 FocusFlow server is running!");
 });
 
 // Route mounting
-app.use("/api/user", authRoutes);
+app.use("/api/user", authRoutes); // Keep for login/signup
+app.use("/auth", authRoutes); // Add for Google OAuth
 app.use("/api/journals", journalRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/pomodoro", pomodoroRoutes);

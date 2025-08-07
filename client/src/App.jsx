@@ -10,6 +10,7 @@ import PomodoroPage from './pages/Pomodoro';
 import TasksPage from './pages/Tasks';
 import ProfilePage from './pages/Profile';
 import ForgotPassword from './pages/ForgotPassword';
+import GoogleAuthSuccess from './pages/GoogleAuthSuccess';
 
 function PrivateRoute({ children }) {
   const { user, token, loading } = useAuth();
@@ -34,6 +35,7 @@ function AppContent() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/auth/google/success" element={<GoogleAuthSuccess />} />
         <Route path="/dashboard" element={
           <PrivateRoute>
             <Dashboard />

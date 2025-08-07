@@ -16,7 +16,9 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: function() {
+      return !this.googleId; // Password not required for Google OAuth users
+    },
     minlength: 6
   },
   fullName: {
@@ -24,22 +26,34 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  googleId: {
+    type: String,
+    sparse: true // Allow multiple docs without googleId but unique when present
+  },
   gender: {
     type: String,
-    required: true
+    required: function() {
+      return !this.googleId; // Not required for Google OAuth users
+    }
   },
   birthday: {
     type: Date,
-    required: true
+    required: function() {
+      return !this.googleId; // Not required for Google OAuth users
+    }
   },
   location: {
     type: String,
-    required: true,
+    required: function() {
+      return !this.googleId; // Not required for Google OAuth users
+    },
     trim: true
   },
   summary: {
     type: String,
-    required: true,
+    required: function() {
+      return !this.googleId; // Not required for Google OAuth users
+    },
     trim: true
   }
 }, { timestamps: true });
