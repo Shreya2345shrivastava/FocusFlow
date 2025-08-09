@@ -66,25 +66,65 @@ const LoginSignup = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '90vh', width: '90vw', overflow: 'hidden', background: 'linear-gradient(to right, #394bb7ff, #d8dae5ff)', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}>
-      <style>{`body { overflow: hidden; padding: 0; }`}</style>
-      {/* Left - Form */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff', borderRadius: '20px', margin: '20px', boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.1)' }}>
-        <div style={{ maxWidth: 500, width: '100%', padding: '2rem', backgroundColor: '#fff', borderRadius: '20px', boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.1)' }}>
-          <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#394bb7ff', marginBottom: '1rem', textAlign: 'center' }}>
-            {isSignup ? 'Create an account' : 'Welcome back'}
-          </h1>
-          <p style={{ fontSize: '1rem', color: '#6b7280', marginBottom: '1.5rem', textAlign: 'center' }}>
-            {isSignup ? 'Please enter your details to sign up.' : 'Please enter your details to log in.'}
-          </p>
-          <form onSubmit={handleAuth} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <>
+      {/* Add Google Fonts */}
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+      
+      <div style={{
+        margin: 0,
+        fontFamily: "'Poppins', sans-serif",
+        background: 'linear-gradient(135deg, #a18cd1, #fbc2eb)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        padding: '1rem'
+      }}>
+        <div style={{
+          background: 'white',
+          padding: '2.5rem',
+          borderRadius: '20px',
+          boxShadow: '0 8px 30px rgba(0,0,0,0.1)',
+          width: '100%',
+          maxWidth: '400px',
+          textAlign: 'center'
+        }}>
+          {/* Logo */}
+          <div style={{
+            fontSize: '2rem',
+            fontWeight: '700',
+            color: '#6a5acd',
+            marginBottom: '1rem'
+          }}>
+            FocusFlow
+          </div>
+          
+          {/* Title */}
+          <h2 style={{
+            marginBottom: '1.5rem',
+            color: '#333',
+            fontSize: '1.5rem'
+          }}>
+            {isSignup ? 'Create Account' : 'Welcome Back'}
+          </h2>
+
+          {/* Form */}
+          <form onSubmit={handleAuth} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <input
               type="email"
-              placeholder="Email address"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              style={{ padding: '0.75rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '1rem', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}
+              style={{
+                width: '100%',
+                padding: '0.8rem',
+                margin: '0.5rem 0',
+                borderRadius: '10px',
+                border: '1px solid #ccc',
+                fontSize: '1rem',
+                boxSizing: 'border-box'
+              }}
             />
             <input
               type="password"
@@ -92,68 +132,127 @@ const LoginSignup = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              style={{ padding: '0.75rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '1rem', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}
+              style={{
+                width: '100%',
+                padding: '0.8rem',
+                margin: '0.5rem 0',
+                borderRadius: '10px',
+                border: '1px solid #ccc',
+                fontSize: '1rem',
+                boxSizing: 'border-box'
+              }}
             />
+            
+            {/* Remember me and Forgot password for login */}
             {!isSignup && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.875rem', color: '#6b7280' }}>
-                <label>
-                  <input type="checkbox" style={{ marginRight: '0.5rem' }} /> Remember for 30 days
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                fontSize: '0.875rem', 
+                color: '#6b7280',
+                margin: '0.5rem 0'
+              }}>
+                <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.8rem' }}>
+                  <input type="checkbox" style={{ marginRight: '0.5rem' }} /> Remember me
                 </label>
-                <a href="#" onClick={handleForgotPassword} style={{ color: '#4f46e5', textDecoration: 'none' }}>Forgot password?</a>
+                <a 
+                  href="#" 
+                  onClick={handleForgotPassword} 
+                  style={{ 
+                    color: '#6a5acd', 
+                    textDecoration: 'none',
+                    fontSize: '0.8rem'
+                  }}
+                  onMouseOver={(e) => e.target.style.textDecoration = 'underline'}
+                  onMouseOut={(e) => e.target.style.textDecoration = 'none'}
+                >
+                  Forgot Password?
+                </a>
               </div>
             )}
-            <button type="submit" disabled={loading} style={{
-              backgroundColor: '#394bb7ff',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '10px',
-              padding: '0.75rem',
-              fontSize: '1rem',
-              fontWeight: 'bold',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.7 : 1,
-              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-            }}>
-              {loading ? (isSignup ? 'Signing up...' : 'Logging in...') : (isSignup ? 'Sign up' : 'Sign in')}
+
+            {/* Login/Signup Button */}
+            <button 
+              type="submit" 
+              disabled={loading}
+              style={{
+                width: '100%',
+                padding: '0.9rem',
+                background: loading ? '#ccc' : '#6a5acd',
+                color: 'white',
+                border: 'none',
+                borderRadius: '10px',
+                fontSize: '1rem',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                transition: 'background 0.3s ease',
+                marginTop: '1rem'
+              }}
+              onMouseOver={(e) => {
+                if (!loading) e.target.style.background = '#5a4bbd';
+              }}
+              onMouseOut={(e) => {
+                if (!loading) e.target.style.background = '#6a5acd';
+              }}
+            >
+              {loading ? (isSignup ? 'Creating Account...' : 'Logging in...') : (isSignup ? 'Create Account' : 'Login')}
             </button>
-            <button type="button" onClick={handleGoogleLogin} style={{
-              backgroundColor: '#db4437',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '10px',
-              padding: '0.75rem',
-              fontSize: '1rem',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-            }}>
+
+            {/* Google Sign-in Button */}
+            <button 
+              type="button" 
+              onClick={handleGoogleLogin}
+              style={{
+                width: '100%',
+                padding: '0.9rem',
+                background: '#db4437',
+                color: 'white',
+                border: 'none',
+                borderRadius: '10px',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                transition: 'background 0.3s ease',
+                marginTop: '0.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem'
+              }}
+              onMouseOver={(e) => e.target.style.background = '#c23321'}
+              onMouseOut={(e) => e.target.style.background = '#db4437'}
+            >
+              <span style={{ fontSize: '1.2rem' }}>G</span>
               Sign in with Google
             </button>
           </form>
-          <p style={{ fontSize: '0.875rem', color: '#6b7280', marginTop: '1rem', textAlign: 'center' }}>
-            {isSignup ? 'Already have an account?' : 'Don’t have an account?'}{' '}
-            <button type="button" onClick={() => setIsSignup(!isSignup)} style={{
-              background: 'none',
-              border: 'none',
-              color: '#4f46e5',
-              textDecoration: 'underline',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-            }}>
-              {isSignup ? 'Sign in' : 'Sign up'}
+
+          {/* Links */}
+          <div style={{
+            marginTop: '1rem',
+            fontSize: '0.9rem'
+          }}>
+            {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
+            <button
+              type="button"
+              onClick={() => setIsSignup(!isSignup)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#6a5acd',
+                textDecoration: 'none',
+                cursor: 'pointer',
+                fontSize: '0.9rem',
+                fontFamily: 'inherit'
+              }}
+              onMouseOver={(e) => e.target.style.textDecoration = 'underline'}
+              onMouseOut={(e) => e.target.style.textDecoration = 'none'}
+            >
+              {isSignup ? 'Sign In' : 'Create Account'}
             </button>
-          </p>
+          </div>
         </div>
       </div>
-
-      {/* Right - Illustration */}
-      <div style={{ flex: 1, backgroundColor: '#5460a6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '20px', margin: '20px', boxShadow: '0px 20px 30px rgba(0, 0, 0, 0.1)' }}>
-        <img
-          src="https://img.freepik.com/premium-vector/tablet-login-concept-illustration_114360-7963.jpg?semt=ais_hybrid&w=740"
-          alt="Authentication Illustration"
-          style={{ maxWidth: '100%', height: '95%', objectFit: 'contain', margin: 'auto', borderRadius: '20px', boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.2)' }}
-        />
-      </div>
-    </div>
+    </>
   );
 };
 
