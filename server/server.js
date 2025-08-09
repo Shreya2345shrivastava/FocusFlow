@@ -27,7 +27,8 @@ const corsOptions = {
     const allowedOrigins = [
       'http://localhost:5173', // Local development
       'http://localhost:5174', // Local development (alternate port)
-      'https://focus-flow-kohl.vercel.app', // Your Vercel deployment
+      'https://focus-flow-kohl.vercel.app', // Your Vercel deployment (old)
+      'https://focus-flow-shreya.vercel.app', // Your Vercel deployment (new)
       'http://localhost:3000' // Alternative local port
     ];
     
